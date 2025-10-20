@@ -1,33 +1,217 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="cs">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wildpink Rice</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WildPinkRice — Projekty • ChatGPT Chat Cloner</title>
+  <meta name="description" content="Portfolio WildPinkRice — prezentace projektu ChatGPT Chat Cloner. Moderní landing page s animacemi a odkazy na GitHub / GreasyFork." />
+
+  <!-- Tailwind CDN (quick prototype) -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body {
-      background-color: #111;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
+    /* Custom theme tweaks */
+    :root{
+      --accent:#10a37f;
+      --muted:#9ca3af;
+      --card-bg: rgba(255,255,255,0.04);
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
     }
-    h1 {
-      color: #ff4dc4;
-      font-size: 3em;
-    }
-    p {
-      color: #ccc;
-      font-size: 1.2em;
-    }
+    body{background:linear-gradient(180deg,#07070a 0%, #0f1724 60%);}
+    .glass{background:var(--glass);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);} 
+    .card{background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.04);}
+    /* subtle animated underline for links */
+    .link-underline{position:relative}
+    .link-underline:after{content:'';position:absolute;left:0;bottom:-2px;height:2px;width:0;background:var(--accent);transition:width .28s ease}
+    .link-underline:hover:after{width:100%}
+
+    /* floating decor */
+    .blob{position:absolute;filter:blur(60px);opacity:.6;border-radius:9999px}
+
+    /* header shadow */
+    header{box-shadow:0 6px 30px rgba(2,6,23,0.6)}
+
+    /* small responsive tweaks */
+    @media (min-width:1024px){ .container-lg{max-width:1100px} }
   </style>
+
+  <!-- AOS for easy on-scroll animations -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 </head>
-<body>
-  <h1>Wildpink Rice</h1>
-  <p>Moje osobní stránka ✨</p>
+<body class="text-gray-100 antialiased leading-relaxed">
+
+  <!-- decorative blobs -->
+  <div class="blob" style="width:420px;height:420px;left:-120px;top:-100px;background:linear-gradient(90deg,#0ea5a4,#06b6d4);mix-blend-mode:screen;opacity:0.25"></div>
+  <div class="blob" style="width:320px;height:320px;right:-80px;bottom:-120px;background:linear-gradient(90deg,#7c3aed,#0ea5a4);mix-blend-mode:screen;opacity:0.18"></div>
+
+  <header class="w-full py-4 px-6 lg:px-12 fixed top-4 left-0 z-40">
+    <div class="container container-lg mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-md flex items-center justify-center bg-gradient-to-br from-green-500 to-teal-400 shadow-lg">
+          <span class="font-semibold text-black">WPR</span>
+        </div>
+        <div>
+          <div class="text-sm font-semibold">WildPinkRice</div>
+          <div class="text-xs text-gray-400">Personal projects & scripts</div>
+        </div>
+      </div>
+      <nav class="hidden md:flex items-center gap-6 text-sm text-gray-300">
+        <a href="#projects" class="link-underline">Projekty</a>
+        <a href="#about" class="link-underline">O mně</a>
+        <a href="#contact" class="link-underline">Kontakt</a>
+        <a class="ml-4 bg-white bg-opacity-5 px-3 py-2 rounded-md text-white border border-white/5 hover:scale-105 transition" href="https://greasyfork.org/en/scripts/553238-chatgpt-chat-cloner" target="_blank" rel="noopener">GreasyFork</a>
+      </nav>
+      <div class="md:hidden">
+        <button id="menuBtn" class="p-2 rounded-md glass border border-white/5">Menu</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-28">
+    <section class="container container-lg mx-auto px-6 lg:px-0">
+      <div class="grid lg:grid-cols-2 gap-10 items-center">
+        <div data-aos="fade-right">
+          <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight">Portfolio WildPinkRice</h1>
+          <p class="mt-4 text-gray-300 max-w-xl">Toto je ukázka mých prací se zaměřením na jednoduché, užitečné a sdílné nástroje. Aktuální projekt: <strong>ChatGPT Chat Cloner</strong> — nástroj pro převod sdílených ChatGPT konverzací do čistého textu.</p>
+
+          <div class="mt-8 flex gap-3">
+            <a href="#projects" class="px-4 py-3 rounded-md bg-gradient-to-r from-[#10a37f] to-[#0e8064] shadow hover:brightness-105 transition">Zobrazit projekt</a>
+            <a href="https://github.com/WildPinkRice" target="_blank" rel="noopener" class="px-4 py-3 rounded-md border border-white/6 glass">GitHub</a>
+          </div>
+
+          <div class="mt-8 text-sm text-gray-400">
+            <div><strong>Aktuální verze:</strong> v5.2</div>
+            <div class="mt-3">Krátký popis: Chrome / Tampermonkey userscript dostupný na GreasyFork. Ideální pro export sdílených chatů z ChatGPT do přehledného textu.</div>
+          </div>
+        </div>
+
+        <div data-aos="fade-left">
+          <div class="card p-6 rounded-xl shadow-lg">
+            <h4 class="text-lg font-semibold">ChatGPT Chat Cloner</h4>
+            <p class="mt-2 text-gray-300">Userscript (Tampermonkey) - převádí sdílené ChatGPT konverzace na čistý text. Instalace přes GreasyFork, otevřít popup a vložit sdílený odkaz.</p>
+
+            <ul class="mt-4 text-sm text-gray-300 space-y-2">
+              <li>Auto-detect: čtení z otevřené stránky</li>
+              <li>Manual URL: načtení sdílené URL</li>
+              <li>Čištění textu: odstranění interních skriptových zbytků</li>
+            </ul>
+
+            <div class="mt-6 flex gap-3">
+              <a href="https://greasyfork.org/en/scripts/553238-chatgpt-chat-cloner" target="_blank" rel="noopener" class="px-4 py-2 rounded-md bg-white text-black font-medium">GreasyFork</a>
+              <button id="openCode" class="px-4 py-2 rounded-md border border-white/6">Zobrazit kód</button>
+            </div>
+
+            <div id="codeModal" class="fixed inset-0 hidden items-center justify-center z-50">
+              <div class="absolute inset-0 bg-black/60" id="modalBg"></div>
+              <div class="relative max-w-4xl w-full p-6 bg-[#0b1220] rounded-xl border border-white/6 shadow-lg">
+                <div class="flex justify-between items-center">
+                  <h5 class="text-lg font-semibold">ChatGPT Chat Cloner — ukázka</h5>
+                  <button id="closeCode" class="px-3 py-1 rounded-md border border-white/6">Zavřít</button>
+                </div>
+                <pre class="mt-4 text-sm overflow-auto max-h-[60vh] bg-[#071226] p-4 rounded-md" id="codeBlock"></pre>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="container container-lg mx-auto px-6 lg:px-0 mt-16">
+      <h3 class="text-2xl font-semibold" data-aos="fade-up">Projekty</h3>
+      <div class="grid md:grid-cols-2 gap-8 mt-6">
+        <article class="card p-6 rounded-xl" data-aos="zoom-in">
+          <h4 class="font-semibold">ChatGPT Chat Cloner</h4>
+          <p class="mt-2 text-gray-300">Userscript pro převod sdílených ChatGPT konverzací do plain textu. Verze 5.2. Linky: GreasyFork, GitHub repo (skript + instrukce).</p>
+          <div class="mt-4 flex gap-3">
+            <a href="https://greasyfork.org/en/scripts/553238-chatgpt-chat-cloner" target="_blank" rel="noopener" class="text-sm px-3 py-2 rounded-md bg-gradient-to-r from-[#10a37f] to-[#0e8064]">GreasyFork</a>
+            <a href="https://github.com/WildPinkRice" target="_blank" rel="noopener" class="text-sm px-3 py-2 rounded-md border border-white/6">Repo</a>
+          </div>
+        </article>
+
+        <!-- placeholder for future projects -->
+        <article class="card p-6 rounded-xl" data-aos="zoom-in" data-aos-delay="80">
+          <h4 class="font-semibold">Další práce</h4>
+          <p class="mt-2 text-gray-300">V přípravě: menší nástroje, experimenty s AI a lokálními modely. Sledujte GitHub pro aktualizace.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="about" class="container container-lg mx-auto px-6 lg:px-0 mt-16">
+      <h3 class="text-2xl font-semibold" data-aos="fade-up">O mně</h3>
+      <div class="mt-4 text-gray-300 max-w-3xl" data-aos="fade-up" data-aos-delay="60">
+        <p>Jsem WildPinkRice, mladý vývojář se zájmem o rychlé užitečné nástroje, webové skripty a experimenty s AI. Preferuji jednoduchá řešení, která lidem šetří čas.</p>
+      </div>
+    </section>
+
+    <section id="contact" class="container container-lg mx-auto px-6 lg:px-0 mt-16 mb-24">
+      <h3 class="text-2xl font-semibold" data-aos="fade-up">Kontakt</h3>
+      <div class="mt-4 grid md:grid-cols-2 gap-8">
+        <div class="card p-6 rounded-xl" data-aos="fade-up" data-aos-delay="60">
+          <h4 class="font-semibold">Odkazy</h4>
+          <ul class="mt-3 text-gray-300 space-y-2">
+            <li>GreasyFork: <a href="https://greasyfork.org/en/scripts/553238-chatgpt-chat-cloner" class="link-underline" target="_blank" rel="noopener">ChatGPT Chat Cloner</a></li>
+            <li>GitHub: <a href="https://github.com/WildPinkRice" class="link-underline" target="_blank" rel="noopener">github.com/WildPinkRice</a></li>
+          </ul>
+        </div>
+        <div class="card p-6 rounded-xl" data-aos="fade-up" data-aos-delay="80">
+          <h4 class="font-semibold">Krátká zpráva</h4>
+          <p class="mt-3 text-gray-300">Pokud chceš spolupracovat nebo máš tipy, jak zlepšit skript (např. detekce nových share formátů), napiš zprávu přes GitHub nebo se ozvi na GreasyFork komentář.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="py-10 text-center text-gray-500">
+    <div>© WildPinkRice • Všechny práva vyhrazena</div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 700, once: true, offset: 50 });
+
+    // load code snippet into modal (fetch raw GreasyFork code if CORS allows)
+    document.getElementById('openCode').addEventListener('click', async () => {
+      const modal = document.getElementById('codeModal');
+      const block = document.getElementById('codeBlock');
+      modal.classList.remove('hidden'); modal.style.display = 'flex';
+      // try to fetch raw script (GreasyFork does not allow raw fetch easily); fallback: show link
+      try {
+        const res = await fetch('https://greasyfork.org/en/scripts/553238-chatgpt-chat-cloner/code');
+        if (!res.ok) throw new Error('Fetch failed');
+        const txt = await res.text();
+        block.textContent = txt.slice(0, 20000) + '\n\n// ... (truncated)';
+      } catch (e) {
+        block.textContent = 'Could not fetch code preview due to CORS or network restrictions. Open the GreasyFork page for full script.';
+      }
+    });
+    document.getElementById('closeCode').addEventListener('click', () => {
+      const modal = document.getElementById('codeModal'); modal.classList.add('hidden'); modal.style.display = 'none';
+    });
+    document.getElementById('modalBg').addEventListener('click', () => { document.getElementById('codeModal').classList.add('hidden'); document.getElementById('codeModal').style.display = 'none'; });
+
+    // simple mobile menu
+    document.getElementById('menuBtn').addEventListener('click', () => {
+      // small menu overlay
+      const overlay = document.createElement('div');
+      overlay.className = 'fixed inset-0 z-50 flex items-start justify-end p-6';
+      overlay.innerHTML = `
+        <div class="w-72 bg-[#0b1220] p-6 rounded-xl card">
+          <a href="#projects" class="block mb-3">Projekty</a>
+          <a href="#about" class="block mb-3">O mně</a>
+          <a href="#contact" class="block mb-3">Kontakt</a>
+          <a href="https://greasyfork.org/en/scripts/553238-chatgpt-chat-cloner" target="_blank" class="block mt-4 text-sm">GreasyFork</a>
+          <div class="mt-4 text-right"><button id="closeOverlay" class="px-3 py-1 rounded-md border">Zavřít</button></div>
+        </div>`;
+      document.body.appendChild(overlay);
+      overlay.querySelector('#closeOverlay').addEventListener('click', () => overlay.remove());
+    });
+
+    // small UX: copy GreasyFork link to clipboard
+    const gfLinkBtn = document.querySelectorAll('a[href*="greasyfork.org"]');
+    gfLinkBtn.forEach(btn => btn.addEventListener('click', (e) => { /* noop */ }));
+  </script>
 </body>
 </html>
