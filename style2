@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Liquid Neon — Projects</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1: #040414;
+    --bg-2: #071129;
+    --glass: rgba(255,255,255,0.06);
+    --glass-2: rgba(255,255,255,0.03);
+    --accent-a: #00f0ff;
+    --accent-b: #7b2cff;
+    --accent-c: #ff4ad0;
+    --muted: #a6b0c0;
+  }
+
+  /* Basic reset */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(124,44,255,0.06), transparent 12%),
+                radial-gradient(1000px 400px at 90% 90%, rgba(0,240,255,0.04), transparent 12%),
+                linear-gradient(180deg,var(--bg-1),var(--bg-2));
+    color:#e8f0ff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+  }
+
+  /* full-screen container */
+  .wrap{
+    min-height:100vh;
+    width:100%;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:64px 24px;
+  }
+
+  /* gooey SVG blobs layer */
+  .blobs {
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    overflow:hidden;
+  }
+  /* center stage area */
+  .stage{
+    position:relative;
+    z-index:5;
+    width:100%;
+    max-width:1200px;
+    display:grid;
+    grid-template-columns: 1fr 420px;
+    gap:40px;
+    align-items:center;
+    padding:40px;
+  }
+
+  /* Left intro */
+  .intro{
+    padding:32px;
+  }
+  .eyebrow{
+    color:var(--muted);
+    font-weight:600;
+    letter-spacing:1px;
+    font-size:13px;
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  h1{
+    font-size:44px;
+    line-height:1.02;
+    margin-bottom:18px;
+    letter-spacing:-0.02em;
+    text-shadow:0 8px 40px rgba(124,44,255,0.06);
+  }
+  p.lead{
+    color:var(--muted);
+    font-size:16px;
+    max-width:54ch;
+    margin-bottom:24px;
+  }
+
+  /* Controls (links) */
+  .actions{display:flex;gap:12px;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 16px;
+    border-radius:12px;
+    font-weight:600;
+    cursor:pointer;
+    text-decoration:none;
+    color:#02101a;
+    border:none;
+    transition:all 220ms ease;
+  }
+  .btn--primary{
+    background:linear-gradient(90deg,var(--accent-a),var(--accent-b));
+    box-shadow:0 8px 30px rgba(124,44,255,0.12), 0 2px 8px rgba(0,240,255,0.06);
+  }
+  .btn--ghost{
+    background:transparent;
+    color:var(--muted);
+    border:1px solid rgba(255,255,255,0.04);
+    backdrop-filter:blur(6px);
+  }
+  .btn--primary:hover{transform:translateY(-4px);filter:brightness(1.05)}
+  .btn--ghost:hover{transform:translateY(-3px)}
+
+  /* Right column - glass card */
+  .panel{
+    position:relative;
+    border-radius:18px;
+    padding:18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    border:1px solid rgba(255,255,255,0.06);
+    backdrop-filter: blur(10px) saturate(120%);
+    box-shadow: 0 10px 40px rgba(3,8,18,0.6);
+    overflow:hidden;
+    min-height:240px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    transform-origin:center;
+    transition:transform .35s cubic-bezier(.2,.9,.22,.99);
+  }
+
+  .panel::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent 40%);
+    mix-blend-mode:overlay;
+  }
+
+  .panel .head{
+    display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;
+  }
+  .badge{
+    padding:8px 12px;border-radius:999px;
+    background:linear-gradient(90deg,var(--accent-b),var(--accent-c));
+    color:#fff;font-weight:700;font-size:13px;
+    box-shadow:0 6px 18px rgba(124,44,255,0.12);
+  }
+
+  .project-title{font-size:18px;font-weight:700;margin-bottom:6px}
+  .project-desc{color:var(--muted);font-size:14px;line-height:1.5;margin-bottom:12px}
+  .links{display:flex;gap:8px;flex-wrap:wrap}
+
+  .link{
+    padding:8px 12px;border-radius:10px;font-weight:600;text-decoration:none;
+    background: linear-gradient(90deg,#ffffff, #ffffff);
+    background-clip: padding-box;
+    color:#00131a;
+    border: 1px solid rgba(255,255,255,0.04);
+    box-shadow:0 6px 18px rgba(0,240,255,0.06);
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .link:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(0,240,255,0.12)}
+
+  /* neon outline ring */
+  .panel .ring{
+    position:absolute; right:-60px; top:-60px; width:220px; height:220px; border-radius:50%;
+    background: conic-gradient(from 0deg, rgba(0,240,255,0.06), rgba(124,44,255,0.06), rgba(255,74,208,0.05));
+    filter: blur(40px);
+    transform:translateZ(0);
+    pointer-events:none;
+  }
+
+  /* mixing small highlight stripe */
+  .accent-stripe{
+    height:6px;border-radius:6px;margin:10px 0 16px;background:linear-gradient(90deg,var(--accent-a),var(--accent-b));
+    box-shadow:0 6px 18px rgba(124,44,255,0.06);
+  }
+
+  /* footer */
+  .meta{margin-top:18px;color:var(--muted);font-size:13px}
+
+  /* subtle float animation on panel */
+  .panel:hover{transform:translateY(-6px) scale(1.01)}
+
+  /* responsive */
+  @media (max-width:980px){
+    .stage{grid-template-columns: 1fr; padding:20px; gap:20px}
+    .project-desc{font-size:15px}
+    h1{font-size:32px}
+  }
+
+  /* -------- Gooey/drip animation (SVG-powered) -------- */
+  /* animate blob movement using CSS keyframes */
+  .blob { position:absolute; transform-origin:center; }
+
+  @keyframes floatA{ 0%{transform:translate(-10px,0) scale(1)} 50%{transform:translate(18px,8px) scale(1.03)} 100%{transform:translate(-10px,0) scale(1)} }
+  @keyframes floatB{ 0%{transform:translate(0,-5px) scale(1)} 50%{transform:translate(-12px,16px) scale(1.06)} 100%{transform:translate(0,-5px) scale(1)} }
+  @keyframes floatC{ 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(10px,-18px) scale(1.02)} 100%{transform:translate(0,0) scale(1)} }
+
+  /* small sparkle overlay */
+  .sparkle {
+    position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen; opacity:.7;
+    background-image: radial-gradient(circle at 10% 20%, rgba(255,255,255,0.06) 0 2px, transparent 6px),
+                      radial-gradient(circle at 80% 80%, rgba(255,255,255,0.04) 0 2px, transparent 6px);
+    filter:blur(8px);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- gooey blobs: uses svg filter "goo" defined inline -->
+  <div class="blobs" aria-hidden="true">
+    <svg width="100%" height="100%" viewBox="0 0 1200 800" preserveAspectRatio="none" style="display:block">
+      <defs>
+        <filter id="goo">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur" />
+          <feColorMatrix in="blur" mode="matrix" values="
+             1 0 0 0 0
+             0 1 0 0 0
+             0 0 1 0 0
+             0 0 0 30 -10" result="goo" />
+          <feBlend in="SourceGraphic" in2="goo" />
+        </filter>
+        <linearGradient id="gA" x1="0" x2="1">
+          <stop offset="0" stop-color="#00f0ff" />
+          <stop offset="1" stop-color="#7b2cff" />
+        </linearGradient>
+        <linearGradient id="gB" x1="0" x2="1">
+          <stop offset="0" stop-color="#7b2cff" />
+          <stop offset="1" stop-color="#ff4ad0" />
+        </linearGradient>
+      </defs>
+
+      <g filter="url(#goo)" transform="translate(0,0)">
+        <g class="blob" style="animation:floatA 8s ease-in-out infinite;">
+          <circle cx="220" cy="180" r="140" fill="url(#gA)" opacity="0.20"></circle>
+          <circle cx="300" cy="260" r="90" fill="url(#gB)" opacity="0.18"></circle>
+        </g>
+
+        <g class="blob" style="animation:floatB 10s ease-in-out infinite;">
+          <circle cx="860" cy="120" r="160" fill="url(#gB)" opacity="0.16"></circle>
+          <circle cx="920" cy="220" r="80" fill="url(#gA)" opacity="0.14"></circle>
+        </g>
+
+        <g class="blob" style="animation:floatC 12s ease-in-out infinite;">
+          <circle cx="740" cy="540" r="190" fill="url(#gA)" opacity="0.14"></circle>
+          <circle cx="640" cy="460" r="100" fill="url(#gB)" opacity="0.12"></circle>
+        </g>
+      </g>
+    </svg>
+    <div class="sparkle"></div>
+  </div>
+
+  <!-- main content -->
+  <div class="stage" id="stage">
+    <div class="intro" id="intro">
+      <div class="eyebrow">Featured project</div>
+      <h1>Liquid Neon Glass — Experimental UI Tools</h1>
+      <p class="lead">A compact showcase of experimental web utilities — current release: <strong>ChatGPT Chat Cloner</strong>, a browser userscript that extracts and cleans shared ChatGPT conversations for easy copying and publishing.</p>
+
+      <div class="actions">
+        <a class="btn btn--primary" href="https://greasyfork.org/en/scripts/553238-chatgpt-chat-cloner" target="_blank" rel="noopener">View on GreasyFork</a>
+        <a class="btn btn--ghost" href="https://github.com/WildPinkRice" target="_blank" rel="noopener">GitHub</a>
+      </div>
+
+      <div class="meta" style="margin-top:18px">Contact: <a href="mailto:wildpinkrice@gmail.com" style="color:var(--accent-a);text-decoration:none">wildpinkrice@gmail.com</a></div>
+    </div>
+
+    <aside class="panel" id="panel" aria-labelledby="project-title">
+      <div class="ring" aria-hidden="true"></div>
+      <div class="head">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="badge">v5.2</div>
+          <div>
+            <div id="project-title" class="project-title">ChatGPT Chat Cloner</div>
+            <div class="project-desc">Tampermonkey userscript to convert shared ChatGPT conversations into clean, copyable text. Supports new and legacy share formats and live page detection.</div>
+          </div>
+        </div>
+        <div style="text-align:right;color:var(--muted);font-size:12px">Userscript</div>
+      </div>
+
+      <div>
+        <div class="accent-stripe" style="height:8px;border-radius:10px;margin:12px 0 18px;background:linear-gradient(90deg,var(--accent-a),var(--accent-b));"></div>
+
+        <div class="links">
+          <a class="link" href="https://greasyfork.org/en/scripts/553238-chatgpt-chat-cloner" target="_blank" rel="noopener">Open on GreasyFork</a>
+          <a class="link" href="https://github.com/WildPinkRice" target="_blank" rel="noopener">Source on GitHub</a>
+        </div>
+
+        <div class="meta" style="margin-top:18px">Notes: For best results open the shared link in your browser and use auto-load. Long conversations may require scrolling to load full content.</div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+  // Subtle interactive parallax based on mouse - moves the stage slightly and tilts the panel
+  (function(){
+    const stage = document.getElementById('stage');
+    const panel = document.getElementById('panel');
+    const intro = document.getElementById('intro');
+    let windowW = window.innerWidth, windowH = window.innerHeight;
+
+    function onMove(e){
+      const x = (e.clientX / windowW) - 0.5; // -0.5..0.5
+      const y = (e.clientY / windowH) - 0.5;
+      // translate stage slightly
+      stage.style.transform = `translate3d(${x*10}px, ${y*6}px, 0)`;
+      // tilt the panel
+      panel.style.transform = `perspective(800px) rotateY(${x*4}deg) rotateX(${-(y*4)}deg) translateZ(0)`;
+      // intro parallax
+      intro.style.transform = `translate3d(${x*6}px, ${y*4}px, 0)`;
+    }
+    function onLeave(){
+      stage.style.transform = '';
+      panel.style.transform = '';
+      intro.style.transform = '';
+    }
+
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseleave', onLeave);
+    window.addEventListener('resize', ()=>{windowW=window.innerWidth;windowH=window.innerHeight});
+  })();
+</script>
+</body>
+</html>
