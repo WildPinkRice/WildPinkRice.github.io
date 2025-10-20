@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Liquid Neon Glass — WildPinkRice</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#03050a;
+    --bg-2:#071226;
+    --glass: rgba(255,255,255,0.04);
+    --glass-2: rgba(255,255,255,0.02);
+    --muted: #9fb0c6;
+    --accent-a: #00f0ff;
+    --accent-b: #7b2cff;
+    --accent-c: #ff4ad0;
+    --card-radius: 18px;
+  }
+
+  /* reset */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(800px 500px at 10% 10%, rgba(124,44,255,0.045), transparent 8%),
+                radial-gradient(700px 400px at 95% 85%, rgba(0,240,255,0.03), transparent 10%),
+                linear-gradient(180deg,var(--bg-1),var(--bg-2));
+    color:#e6f2ff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px;
+  }
+
+  /* stage */
+  .stage{
+    width:100%;
+    max-width:1200px;
+    position:relative;
+    display:grid;
+    grid-template-columns: 1fr 420px;
+    gap:36px;
+    align-items:center;
+    z-index:5;
+    pointer-events:auto;
+  }
+
+  /* animated neon background (SVG goo) is separate */
+  .background-layer{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    display:block;
+  }
+
+  /* Intro left */
+  .intro{
+    z-index:6;
+    padding:28px;
+  }
+  .eyebrow{
+    color:var(--muted);
+    font-weight:600;
+    letter-spacing:1px;
+    font-size:13px;
+    text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  h1{
+    font-size:44px;
+    line-height:1.02;
+    margin-bottom:14px;
+    text-shadow: 0 8px 40px rgba(124,44,255,0.06), 0 2px 18px rgba(0,240,255,0.04);
+  }
+  p.lead{ color:var(--muted); font-size:15px; max-width:60ch; margin-bottom:20px; }
+
+  .actions{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:12px }
+  .btn {
+    font-weight:700;
+    padding:12px 16px;
+    border-radius:12px;
+    cursor:pointer;
+    border: none;
+    text-decoration:none;
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+  }
+  .btn-primary{
+    background: linear-gradient(90deg,var(--accent-a),var(--accent-b));
+    color:#00121a;
+    box-shadow: 0 10px 40px rgba(124,44,255,0.12), 0 2px 8px rgba(0,240,255,0.06);
+    transition:transform .22s ease, filter .22s ease;
+  }
+  .btn-primary:hover{ transform:translateY(-4px) scale(1.02); filter:brightness(1.05) }
+
+  .btn-ghost{
+    background:transparent;
+    color:var(--muted);
+    border:1px solid rgba(255,255,255,0.04);
+    backdrop-filter: blur(6px);
+  }
+
+  /* GLASS PANEL (right) */
+  .panel{
+    position:relative;
+    border-radius:var(--card-radius);
+    padding:18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    border:1px solid rgba(255,255,255,0.06);
+    backdrop-filter: blur(12px) saturate(130%);
+    box-shadow: 0 20px 80px rgba(3,8,18,0.6);
+    overflow:hidden;
+    min-height:300px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    transition:transform .35s cubic-bezier(.2,.9,.22,.99), box-shadow .35s ease;
+    will-change:transform;
+  }
+
+  /* dynamic highlight ring */
+  .panel .ring{
+    position:absolute; right:-100px; top:-110px; width:300px; height:300px; border-radius:50%;
+    background: conic-gradient(from 180deg, rgba(0,240,255,0.06), rgba(124,44,255,0.06), rgba(255,74,208,0.06));
+    filter: blur(60px);
+    pointer-events:none;
+    transform:translateZ(0);
+  }
+
+  /* panel content */
+  .panel .head{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; z-index:2; }
+  .badge{ padding:8px 12px; border-radius:999px; background:linear-gradient(90deg,var(--accent-b),var(--accent-c)); color:#fff; font-weight:700; font-size:13px; box-shadow:0 8px 30px rgba(124,44,255,0.12); }
+  .project-title{ font-size:18px; font-weight:800; color:#fff; }
+  .project-desc{ color:var(--muted); font-size:14px; line-height:1.5; margin-top:6px; }
+
+  .links{ display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; z-index:2; }
+  .link{
+    padding:8px 12px; border-radius:10px; font-weight:700; text-decoration:none;
+    background: linear-gradient(90deg,#ffffff,#f2f2f2);
+    color:#00121a; border:1px solid rgba(255,255,255,0.04);
+    box-shadow:0 8px 30px rgba(0,240,255,0.06);
+    transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
+  }
+  .link:hover{ transform:translateY(-6px) scale(1.02); box-shadow:0 20px 60px rgba(0,240,255,0.14); filter:brightness(1.02) }
+
+  .accent-bar{ height:6px; border-radius:10px; margin:12px 0; background: linear-gradient(90deg,var(--accent-a),var(--accent-b)); box-shadow: 0 10px 30px rgba(124,44,255,0.08); }
+
+  /* CARD TILES (glass plates) - add multiple little plates under panel for visual madness */
+  .plates{ display:flex; gap:12px; flex-wrap:wrap; margin-top:18px; }
+  .plate{
+    width:110px; height:84px; border-radius:12px; padding:10px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    transition: transform .22s cubic-bezier(.2,.9,.22,.99), box-shadow .22s ease, border-color .22s ease;
+    cursor:pointer;
+  }
+  .plate:hover{ transform: translateY(-6px) scale(1.06); border-color: rgba(255,255,255,0.08); box-shadow: 0 20px 50px rgba(0,240,255,0.08); }
+
+  .plate .t{ font-size:13px; font-weight:700; color:#fff; margin-bottom:6px }
+  .plate .s{ font-size:12px; color:var(--muted) }
+
+  /* subtle floating effect around panel and plates */
+  .panel, .plate { will-change: transform; }
+
+  /* footer small */
+  .meta{ color:var(--muted); font-size:13px; margin-top:10px; }
+
+  /* responsive layout */
+  @media (max-width:980px){
+    .stage{ grid-template-columns: 1fr; gap:22px; padding:0 10px; }
+    .panel{ order: -1 }
+    h1{ font-size:28px }
+  }
+
+  /* Gooey SVG blobs float animations */
+  .blob{ position:absolute; filter: drop-shadow(0 20px 60px rgba(0,0,0,0.6)); }
+  @keyframes floatA{ 0%{transform:translate(-30px,0) } 50%{transform:translate(30px,18px)} 100%{transform:translate(-30px,0)} }
+  @keyframes floatB{ 0%{transform:translate(20px,-10px)} 50%{transform:translate(-20px,22px)} 100%{transform:translate(20px,-10px)} }
+  @keyframes floatC{ 0%{transform:translate(10px,0)} 50%{transform:translate(-10px,-22px)} 100%{transform:translate(10px,0)} }
+
+  /* subtle text selection off */
+  ::selection{ background: rgba(0,240,255,0.12); color: #eaffff; }
+</style>
+</head>
+<body>
+
+<!-- animated SVG goo + turbulence displacement for liquid vibe -->
+<div class="background-layer" aria-hidden="true">
+  <svg width="100%" height="100%" viewBox="0 0 1600 900" preserveAspectRatio="none" style="display:block">
+    <defs>
+      <filter id="goo" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="28" result="blur"/>
+        <feColorMatrix in="blur" mode="matrix" values="
+          1 0 0 0 0
+          0 1 0 0 0
+          0 0 1 0 0
+          0 0 0 30 -10" result="goo" />
+        <feBlend in="SourceGraphic" in2="goo"/>
+      </filter>
+
+      <filter id="wavy" x="-50%" y="-50%" width="200%" height="200%">
+        <feTurbulence baseFrequency="0.006" numOctaves="3" result="turb"/>
+        <feDisplacementMap in="SourceGraphic" in2="turb" scale="30" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+
+      <linearGradient id="lg1" x1="0" x2="1">
+        <stop offset="0" stop-color="#00f0ff"/>
+        <stop offset="1" stop-color="#7b2cff"/>
+      </linearGradient>
+      <linearGradient id="lg2" x1="0" x2="1">
+        <stop offset="0" stop-color="#7b2cff"/>
+        <stop offset="1" stop-color="#ff4ad0"/>
+      </linearGradient>
+    </defs>
+
+    <g filter="url(#wavy)" style="mix-blend-mode:screen; opacity:0.9">
+      <g filter="url(#goo)">
+        <g class="blob" style="animation:floatA 9s ease-in-out infinite;">
+          <circle cx="320" cy="220" r="200" fill="url(#lg1)" opacity="0.16"></circle>
+          <circle cx="380" cy="300" r="110" fill="url(#lg2)" opacity="0.14"></circle>
+        </g>
+
+        <g class="blob" style="animation:floatB 11s ease-in-out infinite;">
+          <circle cx="1200" cy="120" r="220" fill="url(#lg2)" opacity="0.14"></circle>
+          <circle cx="1100" cy="220" r="90" fill="url(#lg1)" opacity="0.12"></circle>
+        </g>
+
+        <g class="blob" style="animation:floatC 13s ease-in-out infinite;">
+          <circle cx="760" cy="520" r="240" fill="url(#lg1)" opacity="0.12"></circle>
+          <circle cx="640" cy="460" r="120" fill="url(#lg2)" opacity="0.10"></circle>
+        </g>
+      </g>
+    </g>
+  </svg>
+</div>
+
+<!-- main layout -->
+<div class="stage" role="main" aria-labelledby="hero-title">
+
+  <!-- left intro -->
+  <div class="intro">
+    <div class="eyebrow">Featured project</div>
+    <h1 id="hero-title">Liquid Neon Glass — Experimental UI Tools</h1>
+    <p class="lead">A showcase of experimental UI ideas. Current release: <strong>ChatGPT Chat Cloner</strong>, a userscript that extracts and cleans ChatGPT shared conversations, ready to copy or export.</p>
+
+    <div class="actions">
+      <a class="btn btn-primary" href="https://greasyfork.org/en/scripts/553238-chatgpt-chat-cloner" target="_blank" rel="noopener">View on GreasyFork</a>
+      <a class="btn btn-ghost" href="https://github.com/WildPinkRice" target="_blank" rel="noopener">GitHub</a>
+    </div>
+
+    <div class="meta" style="margin-top:18px">Contact: <a style="color:var(--accent-a); text-decoration:none" href="mailto:wildpinkrice@gmail.com">wildpinkrice@gmail.com</a></div>
+  </div>
+
+  <!-- right glass panel -->
+  <aside class="panel" id="panel" role="region" aria-labelledby="project-title">
+    <div class="ring" aria-hidden="true"></div>
+
+    <div class="head">
+      <div style="display:flex;gap:12px;align-items:center">
+        <div class="badge">v5.2</div>
+        <div>
+          <div id="project-title" class="project-title">ChatGPT Chat Cloner</div>
+          <div class="project-desc">Tampermonkey userscript that converts ChatGPT share links and live chats into clean, copyable plain text. Supports multiple share JSON formats and page auto-detection.</div>
+        </div>
+      </div>
+      <div style="text-align:right; color:var(--muted); font-weight:600; font-size:12px">Userscript</div>
+    </div>
+
+    <div>
+      <div class="accent-bar" aria-hidden="true"></div>
+
+      <div class="links">
+        <a class="link" href="https://greasyfork.org/en/scripts/553238-chatgpt-chat-cloner" target="_blank" rel="noopener">Open on GreasyFork</a>
+        <a class="link" href="https://github.com/WildPinkRice" target="_blank" rel="noopener">Source on GitHub</a>
+      </div>
+
+      <div class="plates" aria-hidden="true">
+        <div class="plate" data-plate="1"><div class="t">Auto-detect</div><div class="s">Reads open pages or share links</div></div>
+        <div class="plate" data-plate="2"><div class="t">Multi-format</div><div class="s">Supports mapping & messages JSON</div></div>
+        <div class="plate" data-plate="3"><div class="t">Clipboard</div><div class="s">Copy cleaned output</div></div>
+      </div>
+
+      <div class="meta">Tip: Open the shared link in a tab and use auto-load for best results. Long chats may need scrolling to fully load.</div>
+    </div>
+  </aside>
+</div>
+
+<script>
+/* Interaction:
+   - panel/plates tilt and respond to mouse position
+   - hovering a plate enlarges and pulses a neon glow
+   - clicking plate (just UI) triggers a brief ripple effect
+*/
+(function(){
+  const panel = document.getElementById('panel');
+  const plates = document.querySelectorAll('.plate');
+
+  // mouse-driven parallax for panel and intro
+  const stage = document.querySelector('.stage');
+  let w=window.innerWidth, h=window.innerHeight;
+  window.addEventListener('resize', ()=>{ w=window.innerWidth; h=window.innerHeight });
+
+  document.addEventListener('mousemove', (e)=>{
+    const x = (e.clientX / w) - 0.5; // -0.5..0.5
+    const y = (e.clientY / h) - 0.5;
+    // panel tilt
+    const ry = x * 6; // rotateY
+    const rx = -y * 6; // rotateX
+    panel.style.transform = `perspective(900px) rotateY(${ry}deg) rotateX(${rx}deg) translateZ(0)`;
+    // subtle parallax on entire stage
+    stage.style.transform = `translate3d(${x*12}px, ${y*8}px, 0)`;
+    // dynamic gradient origin on accent bar or ring could be updated here (omitted for performance)
+  });
+
+  document.addEventListener('mouseleave', ()=>{
+    panel.style.transform = '';
+    stage.style.transform = '';
+  });
+
+  // plates hover/click interactions
+  plates.forEach(pl=>{
+    pl.addEventListener('mouseenter', ()=> {
+      pl.style.transform = 'translateY(-10px) scale(1.08)';
+      pl.style.boxShadow = '0 24px 60px rgba(0,240,255,0.12)';
+      pl.style.borderColor = 'rgba(255,255,255,0.08)';
+    });
+    pl.addEventListener('mouseleave', ()=> {
+      pl.style.transform = '';
+      pl.style.boxShadow = '';
+      pl.style.borderColor = '';
+    });
+    pl.addEventListener('click', (ev)=>{
+      // small ripple by creating an element
+      const r = document.createElement('span');
+      r.style.position='absolute';
+      r.style.left=ev.offsetX+'px';
+      r.style.top=ev.offsetY+'px';
+      r.style.width='10px';
+      r.style.height='10px';
+      r.style.borderRadius='50%';
+      r.style.background='linear-gradient(90deg,var(--accent-a),var(--accent-b))';
+      r.style.opacity='0.9';
+      r.style.transform='translate(-50%,-50%) scale(1)';
+      r.style.pointerEvents='none';
+      r.style.transition='transform .6s ease, opacity .6s ease';
+      pl.appendChild(r);
+      requestAnimationFrame(()=> {
+        r.style.transform='translate(-50%,-50%) scale(18)';
+        r.style.opacity='0';
+      });
+      setTimeout(()=> r.remove(),700);
+    });
+  });
+
+  // subtle plate wobble loop
+  plates.forEach((pl,i)=> {
+    const delay = (i+1)*300;
+    pl.animate([
+      { transform: 'translateY(0)' },
+      { transform: 'translateY(-4px)' },
+      { transform: 'translateY(0)' }
+    ], { duration: 2600 + i*200, iterations: Infinity, easing: 'ease-in-out', delay });
+  });
+
+  // optional: tiny pulsing ring on hover for panel
+  panel.addEventListener('mouseenter', ()=> {
+    panel.style.boxShadow = '0 35px 120px rgba(0,240,255,0.10)';
+  });
+  panel.addEventListener('mouseleave', ()=> {
+    panel.style.boxShadow = '0 20px 80px rgba(3,8,18,0.6)';
+  });
+
+})();
+</script>
+</body>
+</html>
