@@ -3,154 +3,207 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WildPinkRice — ChatGPT Chat Cloner</title>
+<title>ChatGPT Chat Cloner — by WildPinkRice</title>
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  * {margin:0;padding:0;box-sizing:border-box;}
+  html,body {
+    height:100%;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;
+    background:#000;
+    color:#fff;
+    overflow-x:hidden;
+    scroll-behavior:smooth;
   }
 
-  body {
-    background: #fff;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    color: #000;
-    overflow-x: hidden;
+  section {
+    height:100vh;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    text-align:center;
+    transition: all 1s ease;
   }
 
-  header {
-    text-align: center;
-    padding: 120px 20px 80px;
-    background: linear-gradient(to bottom, #ffffff, #f5f5f7);
+  h1 {
+    font-size:5rem;
+    font-weight:600;
+    letter-spacing:-0.03em;
+    opacity:0;
+    transform:translateY(40px);
+    animation:fadeInUp 1.6s ease forwards 0.4s;
   }
 
-  header h1 {
-    font-size: 3.8rem;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    color: #000;
-    margin-bottom: 20px;
+  p {
+    max-width:700px;
+    font-size:1.4rem;
+    line-height:1.7;
+    color:#ccc;
+    margin-top:20px;
+    opacity:0;
+    transform:translateY(40px);
+    animation:fadeInUp 1.8s ease forwards 1s;
   }
 
-  header p {
-    font-size: 1.4rem;
-    color: #555;
-    max-width: 650px;
-    margin: 0 auto;
-    line-height: 1.6;
+  @keyframes fadeInUp {
+    from {opacity:0;transform:translateY(40px);}
+    to {opacity:1;transform:translateY(0);}
   }
 
-  .product-section {
-    text-align: center;
-    padding: 100px 20px;
-    background: #fafafa;
-    transition: all 0.6s ease;
+  .hero {
+    background: radial-gradient(circle at center, #111 0%, #000 100%);
+    position:relative;
+    overflow:hidden;
   }
 
-  .product-section:hover {
-    background: #fff;
+  .hero::before {
+    content:'';
+    position:absolute;
+    top:-50%;
+    left:-50%;
+    width:200%;
+    height:200%;
+    background:conic-gradient(from 180deg, rgba(0,255,255,0.15), rgba(255,0,255,0.15), rgba(0,255,255,0.15));
+    animation:spin 12s linear infinite;
+    filter:blur(100px);
   }
 
-  .product-image {
-    width: 100%;
-    max-width: 600px;
-    margin: 40px auto;
-    filter: drop-shadow(0 10px 40px rgba(0,0,0,0.1));
-    border-radius: 24px;
-    transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+  @keyframes spin {
+    0% {transform:rotate(0deg);}
+    100% {transform:rotate(360deg);}
   }
 
-  .product-image:hover {
-    transform: scale(1.03);
+  .floating-text {
+    font-size:1.8rem;
+    font-weight:300;
+    opacity:0.8;
+    animation:float 6s ease-in-out infinite alternate;
   }
 
-  .section-title {
-    font-size: 2.4rem;
-    font-weight: 500;
-    margin-bottom: 16px;
+  @keyframes float {
+    from {transform:translateY(0);}
+    to {transform:translateY(-20px);}
   }
 
-  .section-description {
-    font-size: 1.2rem;
-    color: #555;
-    max-width: 700px;
-    margin: 0 auto 60px;
-    line-height: 1.7;
+  .showcase {
+    background:#050505;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:0 20px;
+  }
+
+  .mockup {
+    width:70%;
+    max-width:700px;
+    margin-top:60px;
+    border-radius:24px;
+    overflow:hidden;
+    box-shadow:0 0 60px rgba(0,255,255,0.15);
+    opacity:0;
+    transform:scale(0.95);
+    animation:fadeIn 2s ease forwards 0.8s;
+  }
+
+  .mockup img {
+    width:100%;
+    height:auto;
+    display:block;
+  }
+
+  @keyframes fadeIn {
+    from {opacity:0;transform:scale(0.95);}
+    to {opacity:1;transform:scale(1);}
+  }
+
+  .cta-section {
+    background:linear-gradient(180deg,#000,#080808);
   }
 
   .cta {
-    display: inline-block;
-    background: #000;
-    color: #fff;
-    padding: 14px 34px;
-    border-radius: 50px;
-    font-size: 1rem;
-    letter-spacing: 0.05em;
-    text-decoration: none;
-    transition: all 0.3s ease;
+    display:inline-block;
+    margin-top:40px;
+    padding:14px 40px;
+    border:2px solid #fff;
+    border-radius:50px;
+    color:#fff;
+    font-size:1.1rem;
+    letter-spacing:0.05em;
+    text-decoration:none;
+    transition:all 0.3s ease;
   }
 
   .cta:hover {
-    background: #333;
-    transform: scale(1.05);
+    background:#fff;
+    color:#000;
+    transform:scale(1.05);
   }
 
   footer {
-    text-align: center;
-    padding: 60px 20px;
-    background: #f5f5f7;
-    font-size: 0.9rem;
-    color: #666;
+    text-align:center;
+    padding:40px;
+    font-size:0.9rem;
+    color:#555;
+    background:#000;
+    border-top:1px solid #111;
   }
 
-  footer a {
-    color: #000;
-    text-decoration: none;
+  .reveal {
+    opacity:0;
+    transform:translateY(60px);
+    transition:1.5s ease all;
   }
-
-  footer a:hover {
-    text-decoration: underline;
-  }
-
-  /* smooth fade-in effect */
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  header, .product-section, footer {
-    animation: fadeIn 1.5s ease forwards;
+  .reveal.active {
+    opacity:1;
+    transform:translateY(0);
   }
 </style>
 </head>
 <body>
 
-<header>
+<section class="hero">
   <h1>ChatGPT Chat Cloner</h1>
-  <p>A minimalistic, elegant tool that transforms ChatGPT conversations into clean, shareable text.  
-  Designed for clarity. Built for creators.</p>
-</header>
+  <p>Reimagining how you save and share conversations.<br>Simple. Elegant. Intelligent.</p>
+  <p class="floating-text">by WildPinkRice</p>
+</section>
 
-<section class="product-section">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/2048px-ChatGPT_logo.svg.png" 
-       alt="Chat Cloner" class="product-image">
+<section class="showcase">
+  <h2 class="reveal" style="font-size:2.6rem;font-weight:500;">A cleaner way to capture your ideas.</h2>
+  <p class="reveal" style="margin-top:20px;">Turn any ChatGPT conversation into a beautifully structured, exportable text with one click.  
+  Designed to feel invisible — yet unforgettable.</p>
 
-  <h2 class="section-title">Precision. Simplicity. Power.</h2>
-  <p class="section-description">
-    Every feature in Chat Cloner is crafted to be seamless and intuitive —  
-    whether you’re saving your research, sharing insights, or creating archives.  
-    Nothing extra. Just the essentials.
-  </p>
+  <div class="mockup reveal">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/2048px-ChatGPT_logo.svg.png" alt="Chat Cloner Preview">
+  </div>
 
-  <a href="https://greasyfork.org/en/scripts/553238-chatgpt-chat-cloner" target="_blank" class="cta">
-    View on GreasyFork
-  </a>
+  <a href="https://greasyfork.org/en/scripts/553238-chatgpt-chat-cloner" target="_blank" class="cta reveal">Try It Now</a>
+</section>
+
+<section class="cta-section">
+  <h2 class="reveal" style="font-size:2.2rem;font-weight:500;">Built for creators, thinkers, and perfectionists.</h2>
+  <p class="reveal" style="max-width:650px;margin:20px auto;">Whether you’re documenting your learning, writing content, or saving your best AI moments —  
+  Chat Cloner turns your chats into crafted stories. Seamlessly.</p>
 </section>
 
 <footer>
-  <p>© 2025 WildPinkRice. All rights reserved.</p>
-  <p><a href="mailto:wildpinkrice@gmail.com">wildpinkrice@gmail.com</a></p>
+  © 2025 WildPinkRice — <a href="mailto:wildpinkrice@gmail.com" style="color:#888;">wildpinkrice@gmail.com</a>
 </footer>
 
+<script>
+  // Scroll reveal effect
+  const reveals = document.querySelectorAll('.reveal');
+  window.addEventListener('scroll', () => {
+    for (let el of reveals) {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.8) {
+        el.classList.add('active');
+      }
+    }
+  });
+</script>
 </body>
 </html>
